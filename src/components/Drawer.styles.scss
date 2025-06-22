@@ -1,0 +1,167 @@
+@use '../styles/theme';
+
+/* --- Íconos (Font Awesome) --- */
+@import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css');
+[class^="icon-"]:before, [class*=" icon-"]:before {
+  font-family: "Font Awesome 6 Free";
+  font-weight: 900;
+  display: inline-block;
+  width: 1.5em;
+  text-align: center;
+}
+.icon-home:before { content: "\f015"; }
+.icon-heart:before { content: "\f004"; }
+.icon-plus-circle:before { content: "\f055"; }
+.icon-logout:before { content: "\f2f5"; }
+
+/* --- Overlay y Transición --- */
+.drawer-overlay {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.4);
+  z-index: 1000;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease-in-out;
+  display: flex;
+  justify-content: flex-start;
+}
+.drawer-overlay.visible {
+  opacity: 1;
+  pointer-events: auto;
+}
+.slide-from-right-enter-active,
+.slide-from-right-leave-active {
+  transition: transform 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+.slide-from-right-enter-from,
+.slide-from-right-leave-to {
+  transform: translateX(-100%);
+}
+
+/* --- Contenedor Principal del Drawer --- */
+.drawer {
+  width: 100%;
+  max-width: 350px;
+  background-color: var(--surface-ground);
+  height: 100%;
+  box-shadow: 4px 0 20px rgba(0, 0, 0, 0.1);
+  overflow-y: auto;
+  font-family: var(--font-family);
+  display: flex;
+  flex-direction: column;
+}
+
+/* --- Header del Drawer --- */
+.drawer-header {
+  padding: 1.5rem;
+  background-color: var(--surface-card);
+  border-bottom: 1px solid var(--border-color);
+  position: relative;
+  
+  .close-btn {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    color: var(--text-secondary);
+    cursor: pointer;
+    padding: 0.5rem;
+    line-height: 1;
+    border-radius: 50%;
+    transition: background-color 0.2s, color 0.2s;
+    &:hover {
+      background-color: #f0f0f0;
+      color: var(--primary-color);
+    }
+  }
+}
+.user-profile {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+.user-avatar {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background-color: var(--primary-color);
+  color: var(--text-on-primary);
+  font-size: 1.5rem;
+  font-weight: 700;
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+}
+.user-details {
+  .username { font-size: 1.2rem; font-weight: 600; color: var(--text-primary); margin: 0; }
+  .role { font-size: 0.875rem; color: var(--text-secondary); margin: 0.25rem 0 0; }
+}
+
+/* --- Navegación --- */
+.drawer-nav {
+  padding: 1rem 0;
+  flex-grow: 1;
+}
+.menu-group {
+  padding: 0 1rem;
+  margin-bottom: 1rem;
+}
+.menu-title {
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  padding: 0 0.5rem 0.5rem;
+}
+.menu-item {
+  display: flex;
+  align-items: center;
+  padding: 0.9rem 0.75rem;
+  cursor: pointer;
+  transition: background-color 0.2s ease, color 0.2s;
+  border-radius: 8px;
+  margin-bottom: 0.25rem;
+  
+  .icon-home, .icon-heart, .icon-plus-circle, .icon-logout {
+    font-size: 1.1rem;
+    color: var(--text-secondary);
+    transition: color 0.2s;
+  }
+  .label {
+    flex-grow: 1;
+    font-weight: 500;
+    color: var(--text-primary);
+  }
+  .arrow {
+    color: #b0b0b0;
+    font-size: 1.2rem;
+    transition: transform 0.2s;
+  }
+
+  &:hover {
+    background-color: var(--surface-card);
+    .label, .icon-home, .icon-heart, .icon-plus-circle {
+      color: var(--primary-color);
+    }
+    .arrow {
+      transform: translateX(3px);
+    }
+  }
+}
+
+/* --- Footer (Logout) --- */
+.drawer-footer {
+  padding: 1rem;
+  border-top: 1px solid var(--border-color);
+  
+  .menu-item.logout:hover {
+    background-color: #f8d7da;
+    .label, .icon-logout {
+      color: #842029;
+    }
+  }
+}
