@@ -123,8 +123,6 @@
   }
 }
 
-
-
 /* --- Cuadrícula de Zonas --- */
 .zones-grid {
   display: grid;
@@ -392,7 +390,7 @@
 }
 
 @media (max-width: 480px) {
-   .filters {
+  .filters {
     flex-direction: column;
     align-items: stretch;
 
@@ -410,10 +408,9 @@
   }
 }
 
-  .events-header .section-title {
-    font-size: 2rem;
-  }
-  .events-header .subtitle {
-    font-size: 1rem;
-  }
-
+.events-header .section-title {
+  font-size: 2rem;
+}
+.events-header .subtitle {
+  font-size: 1rem;
+}

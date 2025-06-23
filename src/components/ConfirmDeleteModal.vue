@@ -85,7 +85,7 @@
     color: #e63946;
   }
   h3.primary {
-    color: #007b5f;
+    color: var(--color-primary, #800020);
   }
 
   p {
@@ -128,11 +128,11 @@
     background-color: #c5283f;
   }
   .btn-confirm.primary {
-    background-color: #007b5f;
+    background-color: var(--color-primary, #800020);
     color: white;
   }
   .btn-confirm.primary:hover:not(:disabled) {
-    background-color: #005c46;
+    background-color: #66001a; /* versión más oscura de guinda para hover */
   }
 
   .btn-cancel:disabled,

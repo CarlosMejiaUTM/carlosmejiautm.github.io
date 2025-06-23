@@ -1,6 +1,5 @@
 @use '../styles/theme';
 
-/* --- Íconos (Font Awesome) --- */
 @import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css');
 [class^='icon-']:before,
 [class*=' icon-']:before {
@@ -205,7 +204,6 @@
   }
 }
 
-/* --- Media Queries --- */
 @media (max-width: 768px) {
   .header-right .desktop-nav-links {
     display: none;
@@ -221,12 +219,10 @@
   }
 }
 @media (max-width: 480px) {
-  /* Oculta el logo por defecto en móvil */
   .logo {
     display: none;
   }
 
-  /* Pero si está logueado, muéstralo y cambia estilo */
   .logo.logo-mobile-logged {
     display: flex;
     flex-direction: column;

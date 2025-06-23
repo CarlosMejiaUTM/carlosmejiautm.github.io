@@ -182,7 +182,6 @@
       title="Confirmar Eliminación"
       message="¿Estás seguro? Esta acción es permanente."
       confirm-text="Sí, eliminar"
-      variant="danger"
       @close="cancelarEliminarReseña"
       @confirm="eliminarReseña"
     />

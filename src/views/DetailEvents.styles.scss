@@ -256,7 +256,7 @@
         all: unset;
         cursor: pointer;
         font-size: 2.25rem;
-        color: var(--border-color); // color base de las estrellas (gris claro)
+        color: var(--border-color);
         transition:
           color 0.2s,
           transform 0.2s;
@@ -278,11 +278,11 @@
 
         &:hover {
           transform: scale(1.2);
-          color: var(--rating-color); // color dorado de tu tema
+          color: var(--rating-color);
         }
 
         &.filled {
-          color: var(--rating-color); // color dorado para estrellas llenas
+          color: var(--rating-color);
         }
 
         &:disabled {

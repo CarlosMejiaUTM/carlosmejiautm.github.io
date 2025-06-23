@@ -239,7 +239,7 @@
     margin-top: 0;
     font-size: 1.5rem;
     font-weight: 600;
-    color: #005c46;
+    color: var(--color-primary, #800020); /* guinda global */
     margin-bottom: 1.5rem;
   }
   .form-group {
@@ -318,6 +318,9 @@
   }
   .btn-cancel,
   .btn-save {
+    background-color: var(--color-primary, #800020);
+    color: white;
+
     padding: 0.75rem 1.5rem;
     border: none;
     border-radius: 8px;
@@ -332,9 +335,9 @@
     background-color: #6c757d;
     color: white;
   }
-  .btn-save {
-    background-color: #007b5f;
-    color: white;
+
+  .btn-save:hover:not(:disabled) {
+    background-color: #66001a; /* versión más oscura para hover */
   }
   .spinner {
     /* ... */
