@@ -87,6 +87,7 @@
       transform: translateY(-50%);
       pointer-events: none;
       color: var(--text-secondary);
+      font-size: 1rem;
     }
 
     .search-input,
@@ -107,9 +108,22 @@
         border-color: var(--primary-color);
         box-shadow: 0 0 0 3px rgba(0, 123, 95, 0.15);
       }
+
+      // Evitar que se superponga el texto con el ícono
+      &::placeholder {
+        color: var(--text-secondary);
+      }
+    }
+
+    .select-filter {
+      appearance: none;
+      -webkit-appearance: none;
+      -moz-appearance: none;
     }
   }
 }
+
+
 
 /* --- Cuadrícula de Zonas --- */
 .zones-grid {
@@ -378,24 +392,28 @@
 }
 
 @media (max-width: 480px) {
-  filters {
-    .search-wrapper,
-    .select-wrapper {
-      .search-input,
-      .select-filter {
-        padding-left: 2.5rem;
-      }
+   .filters {
+    flex-direction: column;
+    align-items: stretch;
+
+    .search-wrapper i,
+    .select-wrapper i {
+      left: 0.75rem;
+      font-size: 1rem;
     }
 
     .search-input,
     .select-filter {
-      padding-left: 2.5rem !important;
+      padding-left: 2.5rem;
+      font-size: 0.95rem;
     }
   }
+}
+
   .events-header .section-title {
     font-size: 2rem;
   }
   .events-header .subtitle {
     font-size: 1rem;
   }
-}
+
