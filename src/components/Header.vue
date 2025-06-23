@@ -20,7 +20,11 @@
         </button>
       </div>
 
-      <router-link to="/" class="logo">
+      <router-link
+        to="/"
+        class="logo"
+        :class="{ 'logo-mobile-logged': isLoggedIn && isMobile }"
+      >
         <span class="renacimiento">Renacimiento</span>
         <span class="maya">Maya</span>
       </router-link>
@@ -52,6 +56,7 @@
   const drawerOpen = ref(false);
   const isLoggedIn = ref(false);
   const username = ref('');
+  const isMobile = ref(false);
 
   const userInitial = computed(() =>
     username.value ? username.value.charAt(0).toUpperCase() : '?'
@@ -67,14 +72,22 @@
     }
   };
 
+  const checkIsMobile = () => {
+    isMobile.value = window.innerWidth <= 480;
+  };
+
   onMounted(() => {
     updateLoginStatus();
+    checkIsMobile();
+
     window.addEventListener('login-update', updateLoginStatus);
     window.addEventListener('storage', updateLoginStatus);
+    window.addEventListener('resize', checkIsMobile);
   });
 
   onBeforeUnmount(() => {
     window.removeEventListener('login-update', updateLoginStatus);
     window.removeEventListener('storage', updateLoginStatus);
+    window.removeEventListener('resize', checkIsMobile);
   });
 </script>

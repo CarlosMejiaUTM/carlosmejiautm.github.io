@@ -79,18 +79,21 @@
   .search-wrapper,
   .select-wrapper {
     position: relative;
+
     i {
       position: absolute;
       left: 1rem;
       top: 50%;
       transform: translateY(-50%);
       pointer-events: none;
+      color: var(--text-secondary);
     }
+
     .search-input,
     .select-filter {
       width: 100%;
       min-width: 280px;
-      padding: 0.8rem 1rem 0.8rem 2.75rem;
+      padding: 0.8rem 1rem 0.8rem 2.75rem; // espacio a la izquierda para el ícono
       font-size: 1rem;
       border-radius: 8px;
       border: 1px solid var(--border-color);

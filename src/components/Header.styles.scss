@@ -8,8 +8,17 @@
   font-weight: 900;
   display: inline-block;
 }
-.icon-bars:before {
+.icon-bars {
+  color: var(--text-on-primary) !important;
+}
+
+.icon-bars::before {
   content: '\f0c9';
+  font-family: 'Font Awesome 6 Free';
+  font-weight: 900;
+  color: var(--text-on-primary) !important;
+  font-size: 1.5rem;
+  display: inline-block;
 }
 
 /* --- Contenedor Principal del Header --- */
@@ -54,11 +63,40 @@
   user-select: none;
   text-align: center;
   flex-shrink: 0;
+  display: flex;
+  gap: 0.2rem;
+  align-items: center;
+  justify-content: center;
+
   .renacimiento {
     color: var(--text-on-primary);
   }
   .maya {
     color: var(--header-logo);
+  }
+}
+
+@media (max-width: 480px) {
+  /* Solo cuando está logueado y en móvil */
+  .logo.logo-mobile-logged {
+    flex-direction: column;
+    font-size: 1.1rem; /* texto más pequeño */
+    line-height: 1;
+
+    .renacimiento,
+    .maya {
+      display: block;
+      text-align: center;
+    }
+
+    .renacimiento {
+      font-size: 1rem;
+      margin-bottom: 0.15rem;
+    }
+    .maya {
+      font-size: 1.1rem;
+      font-weight: 700;
+    }
   }
 }
 
@@ -183,10 +221,32 @@
   }
 }
 @media (max-width: 480px) {
+  /* Oculta el logo por defecto en móvil */
   .logo {
     display: none;
   }
-  .header-left {
-    margin-right: auto;
+
+  /* Pero si está logueado, muéstralo y cambia estilo */
+  .logo.logo-mobile-logged {
+    display: flex;
+    flex-direction: column;
+    font-size: 1.1rem;
+    line-height: 1;
+
+    .renacimiento,
+    .maya {
+      display: block;
+      text-align: center;
+    }
+
+    .renacimiento {
+      font-size: 1rem;
+      margin-bottom: 0.15rem;
+    }
+
+    .maya {
+      font-size: 1.1rem;
+      font-weight: 700;
+    }
   }
 }
