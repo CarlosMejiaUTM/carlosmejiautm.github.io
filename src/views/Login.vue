@@ -46,7 +46,7 @@
                     id="password"
                     v-model="password"
                     :type="showPassword ? 'text' : 'password'"
-                    placeholder="********"
+                    placeholder="Ingresa la contraseña"
                     required
                     autocomplete="current-password"
                   />

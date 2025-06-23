@@ -89,8 +89,9 @@
     color: var(--text-primary);
   }
 
-  .input-icon-wrapper {
-    position: relative;
+  .input-icon-wrapper input {
+    padding-left: 2.5rem !important;
+    padding-right: 3rem !important;
 
     i {
       position: absolute;
