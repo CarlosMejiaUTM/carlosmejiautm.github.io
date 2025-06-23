@@ -2,12 +2,15 @@
 
 /* --- Íconos --- */
 @import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css');
-[class^="icon-"]:before, [class*=" icon-"]:before {
-  font-family: "Font Awesome 6 Free";
+[class^='icon-']:before,
+[class*=' icon-']:before {
+  font-family: 'Font Awesome 6 Free';
   font-weight: 900;
   display: inline-block;
 }
-.icon-upload-cloud:before { content: "\f0ee"; }
+.icon-upload-cloud:before {
+  content: '\f0ee';
+}
 
 .form-page {
   background-color: var(--surface-ground);
@@ -56,7 +59,7 @@
   padding-top: 100%; /* Truco para hacer un contenedor cuadrado (aspect-ratio: 1) */
   border-radius: 8px;
   overflow: hidden;
-  
+
   img {
     position: absolute;
     top: 0;
@@ -89,25 +92,30 @@
   }
   input[type='text'],
   textarea {
-    width: 100%;
-    padding: 0.85rem 1rem;
+    padding: 0.75rem 1rem;
     font-size: 1rem;
-    border: 1px solid var(--border-color);
+    border: 1.8px solid #ccc;
     border-radius: 8px;
-    transition: all 0.3s ease;
-    background-color: #fcfcfc;
-    box-sizing: border-box;
+    transition: border-color 0.3s ease;
+    font-family: inherit;
 
     &:focus {
-      border-color: var(--primary-color);
+      border-color: var(--primary, #007b5f);
       outline: none;
-      box-shadow: 0 0 0 3px rgba(106, 15, 42, 0.15);
+      box-shadow: 0 0 6px rgba(0, 123, 95, 0.2);
     }
   }
+
   textarea {
     resize: vertical;
-    min-height: 140px;
-    line-height: 1.6;
+    min-height: 120px;
+    line-height: 1.5;
+  }
+
+  .image-preview {
+    margin-top: 0.4rem;
+    font-size: 0.95rem;
+    color: #555;
   }
 }
 
@@ -115,53 +123,123 @@
 .image-upload-wrapper {
   width: 100%;
   .drop-zone {
-    display: flex; flex-direction: column; align-items: center; justify-content: center;
-    padding: 2.5rem; border: 2px dashed var(--border-color); border-radius: 12px;
-    background-color: #fcfcfc; cursor: pointer; transition: all 0.3s;
-    text-align: center; color: var(--text-secondary);
-    .icon-upload-cloud { font-size: 3rem; color: var(--primary-color); margin-bottom: 1rem; }
-    span { font-weight: 600; }
-    small { color: #999; margin-top: 0.5rem; }
-    &:hover { background-color: var(--surface-ground); border-color: var(--primary-color); }
-    &.has-error { border-color: var(--danger-color); background-color: #fff8f8; }
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 2.5rem;
+    border: 2px dashed var(--border-color);
+    border-radius: 12px;
+    background-color: #fcfcfc;
+    cursor: pointer;
+    transition: all 0.3s;
+    text-align: center;
+    color: var(--text-secondary);
+    .icon-upload-cloud {
+      font-size: 3rem;
+      color: var(--primary-color);
+      margin-bottom: 1rem;
+    }
+    span {
+      font-weight: 600;
+    }
+    small {
+      color: #999;
+      margin-top: 0.5rem;
+    }
+    &:hover {
+      background-color: var(--surface-ground);
+      border-color: var(--primary-color);
+    }
+    &.has-error {
+      border-color: var(--danger-color);
+      background-color: #fff8f8;
+    }
   }
   .image-preview-container {
-    position: relative; border-radius: 12px; overflow: hidden;
-    .image-preview { display: block; width: 100%; max-height: 400px; object-fit: cover; }
+    position: relative;
+    border-radius: 12px;
+    overflow: hidden;
+    .image-preview {
+      display: block;
+      width: 100%;
+      max-height: 400px;
+      object-fit: cover;
+    }
     .change-image-btn {
-      position: absolute; top: 1rem; right: 1rem; background-color: rgba(0,0,0,0.6);
-      color: white; border: none; border-radius: 8px; padding: 0.6rem 1rem;
-      cursor: pointer; font-weight: 600; transition: background-color 0.3s;
-      &:hover { background-color: rgba(0,0,0,0.8); }
+      position: absolute;
+      top: 1rem;
+      right: 1rem;
+      background-color: rgba(0, 0, 0, 0.6);
+      color: white;
+      border: none;
+      border-radius: 8px;
+      padding: 0.6rem 1rem;
+      cursor: pointer;
+      font-weight: 600;
+      transition: background-color 0.3s;
+      &:hover {
+        background-color: rgba(0, 0, 0, 0.8);
+      }
     }
   }
 }
 
 /* --- Feedback y Botón --- */
 .feedback-msg {
-  font-weight: 500; padding: 0.75rem; border-radius: 8px;
-  text-align: center; border: 1px solid transparent;
-  &.error { color: #842029; background-color: #f8d7da; border-color: #f5c2c7; }
+  font-weight: 500;
+  padding: 0.75rem;
+  border-radius: 8px;
+  text-align: center;
+  border: 1px solid transparent;
+  &.error {
+    color: #842029;
+    background-color: #f8d7da;
+    border-color: #f5c2c7;
+  }
 }
 
 .submit-btn {
   background: linear-gradient(45deg, var(--primary-color), var(--primary-dark));
-  color: white; font-size: 1.1rem; font-weight: 600; padding: 0.9rem 1.5rem;
-  border: none; border-radius: 10px; cursor: pointer;
-  transition: all 0.25s; display: grid; place-items: center; min-height: 54px;
-  &:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 4px 15px rgba(106, 15, 42, 0.3); }
-  &:disabled { background: var(--text-secondary); cursor: not-allowed; }
+  color: white;
+  font-size: 1.1rem;
+  font-weight: 600;
+  padding: 0.9rem 1.5rem;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.25s;
+  display: grid;
+  place-items: center;
+  min-height: 54px;
+  &:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(106, 15, 42, 0.3);
+  }
+  &:disabled {
+    background: var(--text-secondary);
+    cursor: not-allowed;
+  }
 }
 
 .spinner {
-  width: 24px; height: 24px; border: 3px solid rgba(255, 255, 255, 0.3);
-  border-radius: 50%; border-top-color: #fff;
+  width: 24px;
+  height: 24px;
+  border: 3px solid rgba(255, 255, 255, 0.3);
+  border-radius: 50%;
+  border-top-color: #fff;
   animation: spin 1s ease-in-out infinite;
 }
-@keyframes spin { to { transform: rotate(360deg); } }
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
 
 .fade-in-enter-active {
-  transition: opacity 0.5s ease, transform 0.5s ease;
+  transition:
+    opacity 0.5s ease,
+    transform 0.5s ease;
 }
 .fade-in-enter-from {
   opacity: 0;

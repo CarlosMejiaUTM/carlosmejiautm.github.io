@@ -50,6 +50,7 @@ src/
 └── main.js # Punto de entrada
 
 ```
+
 ---
 
 ## Explicación Detallada del Código y Arquitectura
@@ -82,6 +83,7 @@ src/
 ### 4. Manejo del Estado Reactivo
 
 - Se usa `ref` y `computed` para controlar datos reactivos como:
+
   - Listas de zonas turísticas.
   - Filtros de búsqueda y municipio.
   - Paginación (página actual, total de páginas).
@@ -164,6 +166,7 @@ npm run build
 npm run format
 
 ```
+
 ---
 
 ### 11.Detalles Técnicos y Buenas Prácticas en el Código
@@ -173,7 +176,6 @@ El proyecto RenacimientoMaya está pensado para ser robusto, modular y escalable
 Su arquitectura clara y mantenible facilita la incorporación de nuevas funcionalidades, y el enfoque en la experiencia de usuario (UX) garantiza que la aplicación sea fácil de usar y accesible para un público amplio.
 
 ---
-
 
 ### Manejo de Estado Reactivo con Vue Composition API
 
@@ -249,8 +251,3 @@ Su arquitectura clara y mantenible facilita la incorporación de nuevas funciona
 - Añadir pruebas unitarias y de integración para garantizar estabilidad.
 
 ---
-
-
-
-
-

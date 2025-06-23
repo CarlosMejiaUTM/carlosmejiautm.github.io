@@ -19,16 +19,27 @@
 
 /* --- Íconos (Placeholder) --- */
 @import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css');
-[class^="icon-"]:before, [class*=" icon-"]:before {
-  font-family: "Font Awesome 6 Free";
+[class^='icon-']:before,
+[class*=' icon-']:before {
+  font-family: 'Font Awesome 6 Free';
   font-weight: 900;
   display: inline-block;
   color: var(--text-secondary);
 }
-.icon-search:before { content: "\f002"; }
-.icon-location:before { content: "\f3c5"; }
-.icon-pin:before { content: "\f3c5"; font-size: 0.9em; margin-right: 0.4em; }
-.icon-heart:before { content: "\f004"; }
+.icon-search:before {
+  content: '\f002';
+}
+.icon-location:before {
+  content: '\f3c5';
+}
+.fas.fa-map-marker-alt:before {
+  content: '\f3c5';
+  font-size: 0.9em;
+  margin-right: 0.4em;
+}
+.icon-heart:before {
+  content: '\f004';
+}
 
 /* --- Estilos Generales de la Página --- */
 .events-page {
@@ -65,7 +76,8 @@
   flex-wrap: wrap;
   margin-bottom: 3rem;
 
-  .search-wrapper, .select-wrapper {
+  .search-wrapper,
+  .select-wrapper {
     position: relative;
     i {
       position: absolute;
@@ -74,7 +86,8 @@
       transform: translateY(-50%);
       pointer-events: none;
     }
-    .search-input, .select-filter {
+    .search-input,
+    .select-filter {
       width: 100%;
       min-width: 280px;
       padding: 0.8rem 1rem 0.8rem 2.75rem;
@@ -82,7 +95,9 @@
       border-radius: 8px;
       border: 1px solid var(--border-color);
       background-color: var(--surface-card);
-      transition: border-color 0.3s, box-shadow 0.3s;
+      transition:
+        border-color 0.3s,
+        box-shadow 0.3s;
 
       &:focus {
         outline: none;
@@ -103,16 +118,18 @@
 .zone-card {
   background: var(--surface-card);
   border-radius: 12px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
   overflow: hidden;
   position: relative;
   display: flex;
   flex-direction: column;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-  
+  transition:
+    transform 0.3s ease,
+    box-shadow 0.3s ease;
+
   &:hover {
     transform: translateY(-5px);
-    box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
   }
 
   .card-link-wrapper {
@@ -122,7 +139,7 @@
     flex-direction: column;
     flex-grow: 1;
   }
-  
+
   .zone-image {
     width: 100%;
     height: 200px;
@@ -156,31 +173,51 @@
     }
   }
 }
-
-/* --- Botones en Tarjeta --- */
 .favorite-btn {
   position: absolute;
-  top: 10px; right: 10px;
-  background: rgba(255, 255, 255, 0.8);
-  border: none;
-  width: 36px; height: 36px;
-  border-radius: 50%;
-  cursor: pointer;
-  display: grid;
-  place-items: center;
-  transition: transform 0.2s;
-  backdrop-filter: blur(2px);
+  top: 10px;
+  right: 10px;
 
-  &:hover { transform: scale(1.1); }
-  .icon-heart {
-    font-size: 1.2rem;
-    color: var(--text-secondary);
-    transition: color 0.2s;
-    &.filled { color: var(--favorite-color); }
+  background: transparent !important;
+  border: none !important;
+  padding: 0 !important;
+  margin: 0 !important;
+
+  width: auto !important;
+  height: auto !important;
+
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  box-shadow: none !important;
+  outline: none !important;
+
+  &:hover,
+  &:focus {
+    background: transparent !important;
+    transform: scale(1.2);
+    outline: none;
   }
+
+  .favorite-icon {
+    font-size: 2.2rem;
+    color: #999;
+    transition: color 0.3s ease;
+
+    &.active {
+      color: #e74c3c !important;
+    }
+  }
+
   .spinner.small {
-    width: 18px; height: 18px;
-    border-top-color: var(--primary-color);
+    width: 22px;
+    height: 22px;
+    border: 2px solid transparent;
+    border-top-color: var(--primary-color, #007b5f);
+    border-radius: 50%;
+    animation: spin 0.6s linear infinite;
   }
 }
 
@@ -193,9 +230,12 @@
   opacity: 0;
   transition: opacity 0.3s ease;
 
-  .zone-card:hover & { opacity: 1; }
-  
-  .btn-edit, .btn-delete {
+  .zone-card:hover & {
+    opacity: 1;
+  }
+
+  .btn-edit,
+  .btn-delete {
     flex: 1;
     padding: 0.5rem;
     font-weight: 600;
@@ -204,8 +244,20 @@
     cursor: pointer;
     transition: background-color 0.2s;
   }
-  .btn-edit { background-color: var(--primary-color); color: white; &:hover { background-color: var(--primary-dark); }}
-  .btn-delete { background-color: var(--danger-color); color: white; &:hover { background-color: #c5283f; }}
+  .btn-edit {
+    background-color: var(--primary-color);
+    color: white;
+    &:hover {
+      background-color: var(--primary-dark);
+    }
+  }
+  .btn-delete {
+    background-color: var(--danger-color);
+    color: white;
+    &:hover {
+      background-color: #c5283f;
+    }
+  }
 }
 
 /* --- Paginación --- */
@@ -224,7 +276,7 @@
     font-weight: 600;
     cursor: pointer;
     transition: all 0.2s ease;
-    
+
     &.active {
       background-color: var(--primary-color);
       color: white;
@@ -252,9 +304,12 @@
   border: 2px dashed var(--border-color);
 }
 
-
 /* --- Skeleton Loader --- */
-@keyframes shimmer { 100% { transform: translateX(100%); } }
+@keyframes shimmer {
+  100% {
+    transform: translateX(100%);
+  }
+}
 
 .skeleton-card {
   background: var(--surface-card);
@@ -274,13 +329,26 @@
       position: relative;
       overflow: hidden;
       &::after {
-        position: absolute; top: 0; right: 0; bottom: 0; left: 0;
+        position: absolute;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
         transform: translateX(-100%);
-        background-image: linear-gradient(90deg, rgba(255,255,255,0) 0, rgba(255,255,255,0.4) 50%, rgba(255,255,255,0) 100%);
+        background-image: linear-gradient(
+          90deg,
+          rgba(255, 255, 255, 0) 0,
+          rgba(255, 255, 255, 0.4) 50%,
+          rgba(255, 255, 255, 0) 100%
+        );
         animation: shimmer 1.5s infinite;
         content: '';
       }
-      &.title { height: 1.25rem; width: 60%; margin-bottom: 1rem; }
+      &.title {
+        height: 1.25rem;
+        width: 60%;
+        margin-bottom: 1rem;
+      }
     }
   }
 }
@@ -293,22 +361,38 @@
   border-top-color: #fff;
   animation: spin 1s ease-in-out infinite;
 }
-@keyframes spin { to { transform: rotate(360deg); } }
-
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
 
 /* --- Media Queries --- */
 @media (max-width: 768px) {
-  .zones-grid { grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); }
+  .zones-grid {
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  }
 }
 
 @media (max-width: 480px) {
-  .events-page { padding: 1rem 1rem 3rem; }
-  .events-header .section-title { font-size: 2rem; }
-  .events-header .subtitle { font-size: 1rem; }
+  .events-page {
+    padding: 1rem 1rem 3rem;
+  }
+  .events-header .section-title {
+    font-size: 2rem;
+  }
+  .events-header .subtitle {
+    font-size: 1rem;
+  }
   .filters {
     flex-direction: column;
-    .search-wrapper, .select-wrapper {
-      .search-input, .select-filter { min-width: unset; width: 100%; }
+    .search-wrapper,
+    .select-wrapper {
+      .search-input,
+      .select-filter {
+        min-width: unset;
+        width: 100%;
+      }
     }
   }
 }

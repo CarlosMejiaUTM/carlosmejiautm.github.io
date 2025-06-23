@@ -2,17 +2,26 @@
 
 /* --- Íconos (Font Awesome) --- */
 @import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css');
-[class^="icon-"]:before, [class*=" icon-"]:before {
-  font-family: "Font Awesome 6 Free";
+[class^='icon-']:before,
+[class*=' icon-']:before {
+  font-family: 'Font Awesome 6 Free';
   font-weight: 900;
   display: inline-block;
   width: 1.5em;
   text-align: center;
 }
-.icon-home:before { content: "\f015"; }
-.icon-heart:before { content: "\f004"; }
-.icon-plus-circle:before { content: "\f055"; }
-.icon-logout:before { content: "\f2f5"; }
+.icon-home:before {
+  content: '\f015';
+}
+.icon-heart:before {
+  content: '\f004';
+}
+.icon-plus-circle:before {
+  content: '\f055';
+}
+.icon-logout:before {
+  content: '\f2f5';
+}
 
 /* --- Overlay y Transición --- */
 .drawer-overlay {
@@ -58,7 +67,7 @@
   background-color: var(--surface-card);
   border-bottom: 1px solid var(--border-color);
   position: relative;
-  
+
   .close-btn {
     position: absolute;
     top: 1rem;
@@ -71,7 +80,9 @@
     padding: 0.5rem;
     line-height: 1;
     border-radius: 50%;
-    transition: background-color 0.2s, color 0.2s;
+    transition:
+      background-color 0.2s,
+      color 0.2s;
     &:hover {
       background-color: #f0f0f0;
       color: var(--primary-color);
@@ -96,8 +107,17 @@
   flex-shrink: 0;
 }
 .user-details {
-  .username { font-size: 1.2rem; font-weight: 600; color: var(--text-primary); margin: 0; }
-  .role { font-size: 0.875rem; color: var(--text-secondary); margin: 0.25rem 0 0; }
+  .username {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin: 0;
+  }
+  .role {
+    font-size: 0.875rem;
+    color: var(--text-secondary);
+    margin: 0.25rem 0 0;
+  }
 }
 
 /* --- Navegación --- */
@@ -120,33 +140,35 @@
 .menu-item {
   display: flex;
   align-items: center;
-  padding: 0.9rem 0.75rem;
-  cursor: pointer;
-  transition: background-color 0.2s ease, color 0.2s;
-  border-radius: 8px;
-  margin-bottom: 0.25rem;
-  
-  .icon-home, .icon-heart, .icon-plus-circle, .icon-logout {
+  gap: 0.75rem;
+
+  i {
     font-size: 1.1rem;
     color: var(--text-secondary);
-    transition: color 0.2s;
+    flex-shrink: 0;
+    width: 1.5rem;
+    text-align: center;
   }
+
   .label {
     flex-grow: 1;
     font-weight: 500;
     color: var(--text-primary);
   }
+
   .arrow {
     color: #b0b0b0;
     font-size: 1.2rem;
-    transition: transform 0.2s;
   }
 
   &:hover {
     background-color: var(--surface-card);
-    .label, .icon-home, .icon-heart, .icon-plus-circle {
+
+    i,
+    .label {
       color: var(--primary-color);
     }
+
     .arrow {
       transform: translateX(3px);
     }
@@ -157,10 +179,11 @@
 .drawer-footer {
   padding: 1rem;
   border-top: 1px solid var(--border-color);
-  
+
   .menu-item.logout:hover {
     background-color: #f8d7da;
-    .label, .icon-logout {
+    .label,
+    .icon-logout {
       color: #842029;
     }
   }

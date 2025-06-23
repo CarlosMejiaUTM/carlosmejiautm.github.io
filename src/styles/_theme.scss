@@ -3,28 +3,33 @@
 
 :root {
   /* --- Colores Primarios (Guinda) --- */
-  --primary-color: #6A0F2A; /* Guinda Principal */
-  --primary-dark: #4F0B1F;  /* Guinda Oscuro para hovers */
+  --primary-color: #6a0f2a; /* Guinda Principal */
+  --primary-dark: #4f0b1f; /* Guinda Oscuro para hovers */
 
   /* --- Color de Acento (Dorado) --- */
-  --accent-color: #E5A102; /* Dorado/Amarillo Quemado */
-  
+  --accent-color: #e5a102; /* Dorado/Amarillo Quemado */
+
+  --header-logo: #cfffab; /* Dorado/Amarillo Quemado */
+
   /* --- Colores de Feedback --- */
   --success-color: #2a9d8f; /* Un verde azulado que complementa */
-  --danger-color: #e63946;  /* Un rojo vivo para errores */
+  --danger-color: #e63946; /* Un rojo vivo para errores */
 
   /* --- Colores de Texto --- */
-  --text-primary: #212529;   /* Casi negro, para máxima legibilidad */
+  --text-primary: #212529; /* Casi negro, para máxima legibilidad */
   --text-secondary: #6c757d; /* Gris para subtítulos y texto secundario */
   --text-on-primary: #ffffff; /* Texto blanco sobre fondos guinda */
 
   /* --- Superficies y Bordes --- */
-  --surface-ground: #FDFBFC; /* Fondo de página (blanco con un toque muy sutil de rosa/rojo) */
-  --surface-card: #ffffff;   /* Fondo para tarjetas y modales */
-  --border-color: #e9ecef;   /* Un gris muy claro para bordes */
+  --surface-ground: #fdfbfc; /* Fondo de página (blanco con un toque muy sutil de rosa/rojo) */
+  --surface-card: #ffffff; /* Fondo para tarjetas y modales */
+  --border-color: #e9ecef; /* Un gris muy claro para bordes */
 
   /* --- Otros --- */
+  --logo-color: var(--header-logo); /* Las estrellas ahora serán doradas */
   --rating-color: var(--accent-color); /* Las estrellas ahora serán doradas */
-  --favorite-color: var(--danger-color); /* El corazón de favorito se mantiene rojo */
+  --favorite-color: var(
+    --danger-color
+  ); /* El corazón de favorito se mantiene rojo */
   --font-family: 'Poppins', sans-serif;
 }
