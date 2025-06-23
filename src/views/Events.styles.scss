@@ -378,24 +378,24 @@
 }
 
 @media (max-width: 480px) {
-  .events-page {
-    padding: 1rem 1rem 3rem;
+  filters {
+    .search-wrapper,
+    .select-wrapper {
+      .search-input,
+      .select-filter {
+        padding-left: 2.5rem;
+      }
+    }
+
+    .search-input,
+    .select-filter {
+      padding-left: 2.5rem !important;
+    }
   }
   .events-header .section-title {
     font-size: 2rem;
   }
   .events-header .subtitle {
     font-size: 1rem;
-  }
-  .filters {
-    flex-direction: column;
-    .search-wrapper,
-    .select-wrapper {
-      .search-input,
-      .select-filter {
-        min-width: unset;
-        width: 100%;
-      }
-    }
   }
 }
