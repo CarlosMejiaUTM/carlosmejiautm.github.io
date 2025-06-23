@@ -94,10 +94,10 @@
     .select-filter {
       width: 100%;
       min-width: 280px;
-      padding: 0.8rem 1rem 0.8rem 2.75rem; // espacio a la izquierda para el ícono
+      padding: 0.8rem 1rem 0.8rem 2.75rem;
       font-size: 1rem;
       border-radius: 8px;
-      border: 1px solid var(--border-color);
+      border: 1.8px solid var(--border-color);
       background-color: var(--surface-card);
       transition:
         border-color 0.3s,
@@ -106,10 +106,8 @@
       &:focus {
         outline: none;
         border-color: var(--primary-color);
-        box-shadow: 0 0 0 3px rgba(0, 123, 95, 0.15);
       }
 
-      // Evitar que se superponga el texto con el ícono
       &::placeholder {
         color: var(--text-secondary);
       }

@@ -78,7 +78,6 @@
 
 /* --- Grupos de Inputs (con corrección) --- */
 .input-group {
-  position: relative;
   display: flex;
   flex-direction: column;
   margin-bottom: 1.5rem;
@@ -90,34 +89,33 @@
     color: var(--text-primary);
   }
 
-  input {
-    padding: 0.8rem 3rem; /* Padding a izquierda y derecha para íconos */
-    font-size: 1rem;
-    border: 1px solid var(--border-color);
-    border-radius: 8px;
-    transition: all 0.3s ease;
-    background-color: #fcfcfc;
+  .input-icon-wrapper {
+    position: relative;
 
-    &:focus {
-      border-color: var(--primary-color);
-      outline: none;
-      box-shadow: 0 0 0 3px rgba(0, 123, 95, 0.15);
-      background-color: white;
+    i {
+      position: absolute;
+      top: 50%;
+      left: 1rem;
+      transform: translateY(-50%);
+      color: var(--text-secondary);
     }
-  }
-  .password-toggle {
-    position: absolute;
-    right: 1rem;
-    top: 50%;
-    transform: translateY(10px); /* Alineación vertical ajustada */
-    background: none;
-    border: none;
-    cursor: pointer;
-    color: var(--text-secondary);
-    padding: 0.25rem;
-    z-index: 2;
-    &:hover {
-      color: var(--primary-color);
+
+    input {
+      width: 100%;
+      padding: 0.8rem 1rem 0.8rem 2.5rem; // espacio para ícono a la izquierda
+      font-size: 1rem;
+      border: 1.8px solid var(--border-color, #ccc); // con fallback
+      border-radius: 8px;
+      background-color: #fcfcfc;
+      color: var(--text-primary);
+      transition: all 0.3s ease;
+
+      &:focus {
+        border-color: var(--primary-color, #800020);
+        outline: none;
+        box-shadow: 0 0 0 3px rgba(128, 0, 32, 0); // guinda transparente
+        background-color: white;
+      }
     }
   }
 }
