@@ -14,6 +14,7 @@
           <p class="subtitle">Únete y explora las maravillas de Yucatán.</p>
 
           <form @submit.prevent="register" class="form">
+            <!-- Usuario -->
             <div class="input-group">
               <label for="username">Nombre de usuario</label>
               <div class="input-icon-wrapper">
@@ -29,6 +30,7 @@
               </div>
             </div>
 
+            <!-- Email -->
             <div class="input-group">
               <label for="email">Correo electrónico</label>
               <div class="input-icon-wrapper">
@@ -44,53 +46,56 @@
               </div>
             </div>
 
-            <div class="input-group">
+            <!-- Contraseña -->
+            <div class="input-group with-icon">
               <label for="password">Contraseña</label>
               <div class="input-icon-wrapper">
                 <i class="fas fa-lock"></i>
                 <input
                   id="password"
                   v-model="form.password"
-                  :type="passwordFieldType"
+                  :type="showPassword ? 'text' : 'password'"
                   placeholder="Crea una contraseña segura"
                   required
                   autocomplete="new-password"
                 />
-                <button
-                  type="button"
-                  @click="togglePasswordVisibility"
-                  class="password-toggle"
-                  aria-label="Mostrar u ocultar contraseña"
-                ></button>
               </div>
+              <i
+                class="fas password-toggle"
+                :class="showPassword ? 'fa-eye-slash' : 'fa-eye'"
+                @click="showPassword = !showPassword"
+              ></i>
             </div>
 
-            <div class="input-group">
+            <!-- Confirmar contraseña -->
+            <div class="input-group with-icon">
               <label for="password-confirm">Confirmar Contraseña</label>
               <div class="input-icon-wrapper">
                 <i class="fas fa-lock"></i>
                 <input
                   id="password-confirm"
                   v-model="form.passwordConfirm"
-                  :type="confirmPasswordFieldType"
+                  :type="showConfirmPassword ? 'text' : 'password'"
                   placeholder="Repite la contraseña"
                   required
                   autocomplete="new-password"
                   @blur="validatePasswordsMatch"
                 />
-                <button
-                  type="button"
-                  @click="toggleConfirmPasswordVisibility"
-                  class="password-toggle"
-                  aria-label="Mostrar u ocultar contraseña"
-                ></button>
               </div>
+              <i
+                class="fas password-toggle"
+                :class="showConfirmPassword ? 'fa-eye-slash' : 'fa-eye'"
+                @click="showConfirmPassword = !showConfirmPassword"
+              ></i>
             </div>
+
+            <!-- Botón -->
             <button type="submit" :disabled="loading" class="btn-primary">
               <span v-if="!loading">Crear Cuenta</span>
               <div v-else class="spinner"></div>
             </button>
 
+            <!-- Error -->
             <p v-if="error" class="feedback-msg error">{{ error }}</p>
           </form>
         </div>
@@ -112,29 +117,20 @@
 
   const router = useRouter();
 
-  // State
   const form = reactive({
     username: '',
     email: '',
     password: '',
     passwordConfirm: '',
   });
+
   const loading = ref(false);
   const error = ref('');
   const registerSuccess = ref(false);
 
-  // Password visibility state
-  const passwordFieldType = ref('password');
-  const confirmPasswordFieldType = ref('password');
-
-  const togglePasswordVisibility = () => {
-    passwordFieldType.value =
-      passwordFieldType.value === 'password' ? 'text' : 'password';
-  };
-  const toggleConfirmPasswordVisibility = () => {
-    confirmPasswordFieldType.value =
-      confirmPasswordFieldType.value === 'password' ? 'text' : 'password';
-  };
+  // Estados de visibilidad de contraseñas
+  const showPassword = ref(false);
+  const showConfirmPassword = ref(false);
 
   const validatePasswordsMatch = () => {
     if (
@@ -162,7 +158,6 @@
 
       registerSuccess.value = true;
 
-      // Redirigir a login después de mostrar el mensaje de éxito
       setTimeout(() => {
         router.push('/login');
       }, 2000);

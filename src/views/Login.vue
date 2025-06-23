@@ -45,12 +45,17 @@
                   <input
                     id="password"
                     v-model="password"
-                    type="password"
+                    :type="showPassword ? 'text' : 'password'"
                     placeholder="********"
                     required
                     autocomplete="current-password"
                   />
                 </div>
+                <i
+                  class="fas password-toggle"
+                  :class="showPassword ? 'fa-eye-slash' : 'fa-eye'"
+                  @click="showPassword = !showPassword"
+                ></i>
               </div>
 
               <button type="submit" :disabled="loading" class="btn-primary">
@@ -106,12 +111,12 @@
     </transition>
   </div>
 </template>
-
 <script setup>
   import { ref, onBeforeMount, computed } from 'vue';
   import api from '../services/api';
   import { useRouter } from 'vue-router';
   import './Login.styles.scss';
+  import '../styles/global.scss';
 
   const router = useRouter();
 
@@ -124,7 +129,8 @@
   const forgotMessage = ref('');
   const showForgot = ref(false);
   const loginSuccess = ref(false);
-
+  // Agrega esto con las otras refs
+  const showPassword = ref(false);
   // Password visibility state
   const passwordFieldType = ref('password');
 

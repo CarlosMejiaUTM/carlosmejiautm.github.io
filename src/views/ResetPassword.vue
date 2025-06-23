@@ -17,47 +17,47 @@
           <p class="subtitle">Ingresa y confirma tu nueva contraseña segura.</p>
 
           <form @submit.prevent="submitReset" class="form">
-            <div class="input-group">
+            <!-- Nueva contraseña -->
+            <div class="input-group with-icon">
               <label for="password">Nueva contraseña</label>
               <div class="input-icon-wrapper">
                 <i class="fas fa-lock"></i>
                 <input
                   id="password"
                   v-model="password"
-                  :type="passwordFieldType"
+                  :type="showPassword ? 'text' : 'password'"
                   placeholder="Escribe tu nueva contraseña"
                   required
                   autocomplete="new-password"
                 />
-                <button
-                  type="button"
-                  @click="togglePasswordVisibility"
-                  class="password-toggle"
-                  aria-label="Mostrar u ocultar contraseña"
-                ></button>
               </div>
+              <i
+                class="fas password-toggle"
+                :class="showPassword ? 'fa-eye-slash' : 'fa-eye'"
+                @click="showPassword = !showPassword"
+              ></i>
             </div>
 
-            <div class="input-group">
+            <!-- Confirmar contraseña -->
+            <div class="input-group with-icon">
               <label for="confirm">Confirmar contraseña</label>
               <div class="input-icon-wrapper">
                 <i class="fas fa-lock"></i>
                 <input
                   id="confirm"
                   v-model="confirm"
-                  :type="confirmPasswordFieldType"
+                  :type="showConfirmPassword ? 'text' : 'password'"
                   placeholder="Confirma la contraseña"
                   required
                   autocomplete="new-password"
                   @blur="validatePasswordsMatch"
                 />
-                <button
-                  type="button"
-                  @click="toggleConfirmPasswordVisibility"
-                  class="password-toggle"
-                  aria-label="Mostrar u ocultar contraseña"
-                ></button>
               </div>
+              <i
+                class="fas password-toggle"
+                :class="showConfirmPassword ? 'fa-eye-slash' : 'fa-eye'"
+                @click="showConfirmPassword = !showConfirmPassword"
+              ></i>
             </div>
 
             <button type="submit" class="btn-primary" :disabled="loading">
@@ -89,17 +89,9 @@
   const loading = ref(false);
   const success = ref(false);
 
-  const passwordFieldType = ref('password');
-  const confirmPasswordFieldType = ref('password');
-
-  const togglePasswordVisibility = () => {
-    passwordFieldType.value =
-      passwordFieldType.value === 'password' ? 'text' : 'password';
-  };
-  const toggleConfirmPasswordVisibility = () => {
-    confirmPasswordFieldType.value =
-      confirmPasswordFieldType.value === 'password' ? 'text' : 'password';
-  };
+  // Estados de visibilidad
+  const showPassword = ref(false);
+  const showConfirmPassword = ref(false);
 
   const validatePasswordsMatch = () => {
     if (password.value && confirm.value && password.value !== confirm.value) {
