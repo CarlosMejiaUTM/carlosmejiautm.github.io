@@ -10,6 +10,11 @@
 .icon-bars {
   color: var(--text-on-primary) !important;
 }
+.logo-image {
+  height: 60px; /* Ajusta a la altura deseada */
+  width: auto;
+  display: block;
+}
 
 .icon-bars::before {
   content: '\f0c9';

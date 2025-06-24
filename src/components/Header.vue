@@ -19,14 +19,12 @@
           <i class="icon-bars"></i>
         </button>
       </div>
-
       <router-link
         to="/"
         class="logo"
         :class="{ 'logo-mobile-logged': isLoggedIn && isMobile }"
       >
-        <span class="renacimiento">Renacimiento</span>
-        <span class="maya">Maya</span>
+        <img :src="logo" alt="Logo Renacimiento Maya" class="logo-image" />
       </router-link>
 
       <div class="header-right">
@@ -49,6 +47,8 @@
 </template>
 
 <script setup>
+  import logo from './img/logo.png'; // importa la imagen relativa a este componente
+
   import { ref, computed, onMounted, onBeforeUnmount } from 'vue';
   import AccountDrawer from './Drawer.vue';
   import './Header.styles.scss';
