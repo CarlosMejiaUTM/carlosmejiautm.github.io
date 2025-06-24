@@ -43,7 +43,6 @@
 
 /* --- Estilos Generales de la Página --- */
 .events-page {
-  max-width: 1400px;
   margin: 0 auto;
   padding: 2rem 1.5rem 4rem;
   font-family: var(--font-family);
@@ -51,6 +50,12 @@
 }
 
 .events-header {
+  margin-top: 10vh; /* Ya que el carrusel mide 50vh */
+  text-align: center;
+  margin-bottom: 2.5rem;
+
+
+
   text-align: center;
   margin-bottom: 2.5rem;
   .section-title {
@@ -61,7 +66,6 @@
   .subtitle {
     font-size: 1.2rem;
     color: var(--text-secondary);
-    margin-top: 0.5rem;
     max-width: 600px;
     margin-left: auto;
     margin-right: auto;
@@ -118,6 +122,72 @@
       -webkit-appearance: none;
       -moz-appearance: none;
     }
+  }
+}
+/* --- Diseño del carousel --- */
+
+
+.main-carousel {
+  position: relative;
+  width: 100%;
+  height: 50vh;
+  overflow: hidden;
+  margin: 0;
+  padding: 0;
+}
+
+.carousel-slide {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  opacity: 0;
+  transition: opacity 1s ease-in-out;
+  z-index: 1;
+}
+
+.carousel-slide.active {
+  opacity: 1;
+  z-index: 2;
+}
+
+
+.carousel-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.carousel-overlay-text {
+  position: absolute;
+  top: 70%;
+  left: 3rem;
+  transform: translateY(-50%);
+  color: white;
+  font-size: 2.5rem;
+  font-weight: bold;
+  text-shadow: 0 0 10px rgba(0, 0, 0, 0.7);
+  z-index: 3;
+  max-width: 60%;
+  text-align: left;
+}
+
+
+@media (max-width: 768px) {
+  .carousel-overlay-text {
+    font-size: 1.5rem;
+    left: 1rem;
+    max-width: 90%;
+  }
+}
+
+@media (max-width: 480px) {
+  .carousel-overlay-text {
+    font-size: 1.2rem;
+    left: 1rem;
+    max-width: 95%;
   }
 }
 

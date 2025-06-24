@@ -1,5 +1,32 @@
 <template>
+  <div class="main-carousel">
+    <div
+      v-for="(zone, index) in zonesWithImages"
+      :key="zone._id"
+      class="carousel-slide"
+      :class="{ active: index === currentIndex }"
+    >
+      <img
+        v-if="zone.imageUrls && zone.imageUrls.length > 0"
+        :src="zone.imageUrls[0]"
+        class="carousel-image"
+        :alt="`Imagen principal de ${zone.name}`"
+      />
+      <div class="carousel-overlay-text">
+        Zonas turísticas de Yucatán que no te puedes perder
+      </div>
+    </div>
+  </div>
+
+
+  
+    <!-- SECCIÓN PRINCIPAL ORIGINAL -->
+
   <section class="events-page">
+
+
+
+
     <div class="events-header">
       <h1 class="section-title">Explora Yucatán</h1>
       <p class="subtitle">
@@ -7,6 +34,7 @@
       </p>
     </div>
 
+    <!-- EL RESTO SIN CAMBIOS -->
     <div class="filters">
       <div class="search-wrapper">
         <i class="fas fa-search"></i>
@@ -32,6 +60,7 @@
       </div>
     </div>
 
+    <!-- Cards, paginación, modales, etc... -->
     <div v-if="isLoading" class="zones-grid">
       <div v-for="i in itemsPerPage" :key="i" class="skeleton-card">
         <div class="skeleton-image"></div>
@@ -58,7 +87,6 @@
             <h3>{{ zone.name }}</h3>
             <p class="municipality">
               <i class="fas fa-map-marker-alt"></i>
-
               {{ zone.municipality }}
             </p>
             <p class="rating">
@@ -150,6 +178,7 @@
   </section>
 </template>
 
+
 <script setup>
   import { ref, computed, watch, onMounted, onUnmounted } from 'vue';
   import { useRouter } from 'vue-router';
@@ -161,6 +190,34 @@
   import Notification from '../components/Notification.vue';
 
   const router = useRouter();
+const currentIndex = ref(0);
+
+let intervalId = null;
+
+const zonesWithImages = computed(() => {
+  if (Array.isArray(paginatedZones.value)) {
+    return paginatedZones.value.filter(
+      (zone) => zone.imageUrls && zone.imageUrls.length > 0
+    );
+  }
+  return [];
+});
+
+
+function nextImage() {
+  if (zonesWithImages.value.length === 0) return;
+  currentIndex.value = (currentIndex.value + 1) % zonesWithImages.value.length;
+}
+
+onMounted(() => {
+  intervalId = setInterval(() => {
+    nextImage();
+  }, 10000); // 10 segundos
+});
+
+onUnmounted(() => {
+  if (intervalId) clearInterval(intervalId);
+});
 
   // STATE
   const zonas = ref([]);
