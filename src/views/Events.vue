@@ -18,15 +18,9 @@
     </div>
   </div>
 
-
-  
-    <!-- SECCIÓN PRINCIPAL ORIGINAL -->
+  <!-- SECCIÓN PRINCIPAL ORIGINAL -->
 
   <section class="events-page">
-
-
-
-
     <div class="events-header">
       <h1 class="section-title">Explora Yucatán</h1>
       <p class="subtitle">
@@ -178,7 +172,6 @@
   </section>
 </template>
 
-
 <script setup>
   import { ref, computed, watch, onMounted, onUnmounted } from 'vue';
   import { useRouter } from 'vue-router';
@@ -190,34 +183,34 @@
   import Notification from '../components/Notification.vue';
 
   const router = useRouter();
-const currentIndex = ref(0);
+  const currentIndex = ref(0);
 
-let intervalId = null;
+  let intervalId = null;
 
-const zonesWithImages = computed(() => {
-  if (Array.isArray(paginatedZones.value)) {
-    return paginatedZones.value.filter(
-      (zone) => zone.imageUrls && zone.imageUrls.length > 0
-    );
+  const zonesWithImages = computed(() => {
+    if (Array.isArray(paginatedZones.value)) {
+      return paginatedZones.value.filter(
+        (zone) => zone.imageUrls && zone.imageUrls.length > 0
+      );
+    }
+    return [];
+  });
+
+  function nextImage() {
+    if (zonesWithImages.value.length === 0) return;
+    currentIndex.value =
+      (currentIndex.value + 1) % zonesWithImages.value.length;
   }
-  return [];
-});
 
+  onMounted(() => {
+    intervalId = setInterval(() => {
+      nextImage();
+    }, 10000);
+  });
 
-function nextImage() {
-  if (zonesWithImages.value.length === 0) return;
-  currentIndex.value = (currentIndex.value + 1) % zonesWithImages.value.length;
-}
-
-onMounted(() => {
-  intervalId = setInterval(() => {
-    nextImage();
-  }, 10000); // 10 segundos
-});
-
-onUnmounted(() => {
-  if (intervalId) clearInterval(intervalId);
-});
+  onUnmounted(() => {
+    if (intervalId) clearInterval(intervalId);
+  });
 
   // STATE
   const zonas = ref([]);
@@ -241,7 +234,6 @@ onUnmounted(() => {
   const deleteConfirmOpen = ref(false);
   const zoneToDelete = ref(null);
 
-  // COMPUTED
   const paginatedZones = computed(() => zonas.value);
 
   /**
