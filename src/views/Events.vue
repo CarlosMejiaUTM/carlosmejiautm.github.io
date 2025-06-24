@@ -205,7 +205,7 @@
   onMounted(() => {
     intervalId = setInterval(() => {
       nextImage();
-    }, 10000);
+    }, 5000);
   });
 
   onUnmounted(() => {
