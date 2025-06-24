@@ -102,6 +102,7 @@
 
 <script setup>
   import { ref, watch } from 'vue';
+  import heic2any from 'heic2any';
 
   const props = defineProps({
     isOpen: Boolean,
@@ -154,7 +155,6 @@
       }
     });
   };
-
   const handleImageChange = async (event) => {
     const files = Array.from(event.target.files);
     const newFiles = [];
@@ -165,18 +165,24 @@
     );
 
     for (const file of files) {
-      const base64 = await getBase64(file);
+      try {
+        const resizedFile = await resizeImageFile(file);
 
-      const isDuplicateInBackend = existingHashes.includes(base64);
-      const isDuplicateInSession = newImagePreviews.value.includes(base64);
+        const base64 = await getBase64(resizedFile);
 
-      if (isDuplicateInBackend) {
-        alert(`⚠️ La imagen "${file.name}" ya existe en la zona.`);
-      } else if (isDuplicateInSession) {
-        alert(`⚠️ Ya seleccionaste "${file.name}" anteriormente.`);
-      } else {
-        newFiles.push(file);
-        previews.push(base64);
+        const isDuplicateInBackend = existingHashes.includes(base64);
+        const isDuplicateInSession = previews.includes(base64);
+
+        if (isDuplicateInBackend) {
+          alert(`⚠️ La imagen "${file.name}" ya existe en la zona.`);
+        } else if (isDuplicateInSession) {
+          alert(`⚠️ Ya seleccionaste "${file.name}" anteriormente.`);
+        } else {
+          newFiles.push(resizedFile);
+          previews.push(base64);
+        }
+      } catch (error) {
+        alert(`Error al procesar la imagen "${file.name}": ${error.message}`);
       }
     }
 
@@ -192,6 +198,60 @@
       imagesToDelete.value.push(url);
     }
   };
+  function resizeImageFile(
+    file,
+    maxWidth = 1920,
+    maxHeight = 1920,
+    quality = 0.8
+  ) {
+    return new Promise((resolve, reject) => {
+      const img = new Image();
+      const url = URL.createObjectURL(file);
+
+      img.onload = () => {
+        let { width, height } = img;
+
+        if (width <= maxWidth && height <= maxHeight) {
+          URL.revokeObjectURL(url);
+          resolve(file);
+          return;
+        }
+
+        const aspectRatio = width / height;
+        if (width > height) {
+          width = maxWidth;
+          height = Math.round(maxWidth / aspectRatio);
+        } else {
+          height = maxHeight;
+          width = Math.round(maxHeight * aspectRatio);
+        }
+
+        const canvas = document.createElement('canvas');
+        canvas.width = width;
+        canvas.height = height;
+        const ctx = canvas.getContext('2d');
+        ctx.drawImage(img, 0, 0, width, height);
+
+        const mimeType = file.type === 'image/png' ? 'image/png' : 'image/jpeg';
+        canvas.toBlob(
+          (blob) => {
+            URL.revokeObjectURL(url);
+            const resizedFile = new File([blob], file.name, { type: mimeType });
+            resolve(resizedFile);
+          },
+          mimeType,
+          quality
+        );
+      };
+
+      img.onerror = (e) => {
+        URL.revokeObjectURL(url);
+        reject(new Error('Error al cargar la imagen para redimensionar'));
+      };
+
+      img.src = url;
+    });
+  }
 
   const handleSubmit = () => {
     const data = new FormData();

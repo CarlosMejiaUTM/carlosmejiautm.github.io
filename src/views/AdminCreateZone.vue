@@ -128,21 +128,29 @@
   /**
    * Maneja la selección de múltiples archivos y crea sus vistas previas.
    */
-  const handleImageUpload = (event) => {
+  const handleImageUpload = async (event) => {
     const files = event.target.files;
-    if (files) {
-      // Guarda la lista de archivos en el estado
-      zone.value.imageFiles = Array.from(files);
+    if (!files || files.length === 0) return;
 
-      // Limpia las vistas previas anteriores para evitar fugas de memoria
-      imagePreviews.value.forEach((url) => URL.revokeObjectURL(url));
+    imagePreviews.value.forEach((url) => URL.revokeObjectURL(url));
 
-      // Crea nuevas URLs de vista previa para cada archivo seleccionado
-      imagePreviews.value = zone.value.imageFiles.map((file) =>
-        URL.createObjectURL(file)
-      );
-      error.value = '';
+    const resizedFiles = [];
+    const previews = [];
+
+    for (const file of files) {
+      try {
+        const resizedFile = await resizeImageFile(file);
+        resizedFiles.push(resizedFile);
+        previews.push(URL.createObjectURL(resizedFile));
+      } catch (error) {
+        console.error('Error al redimensionar imagen:', error);
+        error.value = `No se pudo procesar la imagen: ${file.name}`;
+      }
     }
+
+    zone.value.imageFiles = resizedFiles;
+    imagePreviews.value = previews;
+    error.value = '';
   };
 
   /**
@@ -199,4 +207,59 @@
     imagePreviews.value.forEach((url) => URL.revokeObjectURL(url));
     window.removeEventListener('login-update', checkAuth);
   });
+
+  function resizeImageFile(
+    file,
+    maxWidth = 1920,
+    maxHeight = 1920,
+    quality = 0.8
+  ) {
+    return new Promise((resolve, reject) => {
+      const img = new Image();
+      const url = URL.createObjectURL(file);
+
+      img.onload = () => {
+        let { width, height } = img;
+
+        if (width <= maxWidth && height <= maxHeight) {
+          URL.revokeObjectURL(url);
+          resolve(file); // no necesita redimensionar
+          return;
+        }
+
+        const aspectRatio = width / height;
+        if (width > height) {
+          width = maxWidth;
+          height = Math.round(maxWidth / aspectRatio);
+        } else {
+          height = maxHeight;
+          width = Math.round(maxHeight * aspectRatio);
+        }
+
+        const canvas = document.createElement('canvas');
+        canvas.width = width;
+        canvas.height = height;
+        const ctx = canvas.getContext('2d');
+        ctx.drawImage(img, 0, 0, width, height);
+
+        const mimeType = file.type === 'image/png' ? 'image/png' : 'image/jpeg';
+        canvas.toBlob(
+          (blob) => {
+            URL.revokeObjectURL(url);
+            const resizedFile = new File([blob], file.name, { type: mimeType });
+            resolve(resizedFile);
+          },
+          mimeType,
+          quality
+        );
+      };
+
+      img.onerror = () => {
+        URL.revokeObjectURL(url);
+        reject(new Error('No se pudo cargar la imagen'));
+      };
+
+      img.src = url;
+    });
+  }
 </script>
