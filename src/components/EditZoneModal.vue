@@ -286,20 +286,22 @@
     z-index: 1000;
   }
   .modal-content {
-    background: white;
+    background: var(--surface-card); /* ← fondo adaptable */
+    color: var(--text-primary); /* ← texto adaptable */
     padding: 2rem;
     border-radius: 12px;
     width: 90%;
     max-width: 550px;
     max-height: 90vh;
     overflow-y: auto;
-    font-family: 'Poppins', sans-serif;
+    font-family: var(--font-family);
+    border: 1px solid var(--border-color); /* ← borde adaptable */
   }
   .modal-content h3 {
     margin-top: 0;
     font-size: 1.5rem;
     font-weight: 600;
-    color: var(--color-primary, #800020); /* guinda global */
+    color: var(--primary-dark); /* guinda global */
     margin-bottom: 1.5rem;
   }
   .form-group {
@@ -309,13 +311,15 @@
     display: block;
     margin-bottom: 0.5rem;
     font-weight: 600;
-    color: #333;
+    color: var(--text-primary); /* ← texto del label adaptable */
   }
   input,
   textarea {
     width: 100%;
     padding: 0.75rem;
-    border: 1px solid #ccc;
+    background-color: var(--surface-card); /* ← input fondo adaptable */
+    color: var(--text-primary); /* ← input texto adaptable */
+    border: 1px solid var(--border-color); /* ← borde adaptable */
     border-radius: 8px;
     font-size: 1rem;
     box-sizing: border-box;
@@ -370,6 +374,11 @@
   .image-preview-item.marked-for-deletion .delete-overlay {
     opacity: 1;
   }
+  input::placeholder,
+  textarea::placeholder {
+    color: var(--text-secondary); /* ← placeholder adaptable */
+    opacity: 1;
+  }
   .modal-buttons {
     display: flex;
     justify-content: flex-end;
@@ -378,8 +387,8 @@
   }
   .btn-cancel,
   .btn-save {
-    background-color: var(--color-primary, #800020);
-    color: white;
+    background-color: var(--primary-color); /* ← botón fondo adaptable */
+    color: var(--text-on-primary); /* ← texto blanco sobre guinda */
 
     padding: 0.75rem 1.5rem;
     border: none;
@@ -391,17 +400,18 @@
     align-items: center;
     justify-content: center;
   }
+
   .btn-cancel {
-    background-color: #6c757d;
-    color: white;
+    background-color: var(
+      --text-secondary
+    ); /* gris oscuro en light / claro en dark */
+    color: var(--text-on-primary);
   }
 
   .btn-save:hover:not(:disabled) {
-    background-color: #66001a; /* versión más oscura para hover */
+    background-color: var(--primary-dark);
   }
-  .spinner {
-    /* ... */
-  }
+
   .fade-enter-active,
   .fade-leave-active {
     transition: opacity 0.3s ease;

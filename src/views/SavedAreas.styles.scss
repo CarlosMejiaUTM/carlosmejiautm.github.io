@@ -117,7 +117,7 @@
       cursor: not-allowed;
     }
     &:hover:not(:disabled):not(.active) {
-      background-color: #e9ecef;
+      background-color: var(--border-color);
       border-color: #ced4da;
     }
   }

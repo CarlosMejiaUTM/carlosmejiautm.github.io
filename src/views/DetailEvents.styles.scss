@@ -420,6 +420,36 @@
     }
   }
 }
+@media (prefers-color-scheme: dark) {
+  .gallery-container {
+    background-color: #2a2a2a; // fondo general del contenedor oscuro
+
+    .main-image {
+      background-color: var(--border-color); // ya está bien asignado
+    }
+
+    .thumbnails {
+      background-color: var(--surface-card); // más oscuro para modo oscuro
+
+      img {
+        border-color: transparent;
+
+        &.active {
+          border-color: var(--primary-color); // mismo color activo
+        }
+
+        &:hover {
+          opacity: 0.9;
+        }
+      }
+    }
+
+    .no-image-placeholder {
+      background-color: var(--surface-card);
+      color: var(--text-secondary);
+    }
+  }
+}
 
 /* --- Skeleton Loader --- */
 @keyframes shimmer {

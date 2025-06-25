@@ -99,6 +99,7 @@
             Eliminar
           </button>
         </div>
+
         <button
           v-if="isAuthenticated && userRole === 'user'"
           class="favorite-btn"

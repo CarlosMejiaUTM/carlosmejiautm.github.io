@@ -85,7 +85,7 @@
     color: #e63946;
   }
   h3.primary {
-    color: var(--color-primary, #800020);
+    color: var(--primary-dark);
   }
 
   p {
@@ -172,5 +172,43 @@
   .scale-up-leave-to {
     transform: scale(0.95);
     opacity: 0;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    .modal-content {
+      background-color: var(--surface-card); /* fondo oscuro */
+      color: var(--text-primary); /* texto claro */
+    }
+
+    p {
+      color: var(--text-secondary);
+    }
+
+    .btn-cancel {
+      background-color: #5a5a5a;
+      color: white;
+    }
+
+    .btn-cancel:hover:not(:disabled) {
+      background-color: #484848;
+    }
+
+    .btn-confirm.primary {
+      background-color: var(--primary-color);
+      color: var(--text-on-primary);
+    }
+
+    .btn-confirm.primary:hover:not(:disabled) {
+      background-color: var(--primary-dark);
+    }
+
+    .btn-confirm.danger {
+      background-color: var(--danger-color, #ff6b6b);
+      color: white;
+    }
+
+    .btn-confirm.danger:hover:not(:disabled) {
+      background-color: #e63946;
+    }
   }
 </style>

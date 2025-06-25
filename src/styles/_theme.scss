@@ -3,33 +3,77 @@
 
 :root {
   /* --- Colores Primarios (Guinda) --- */
-  --primary-color: #6a0f2a; /* Guinda Principal */
-  --primary-dark: #4f0b1f; /* Guinda Oscuro para hovers */
+  --primary-color: #6a0f2a;
+  --primary-dark: #4f0b1f;
 
   /* --- Color de Acento (Dorado) --- */
-  --accent-color: #e5a102; /* Dorado/Amarillo Quemado */
-
-  --header-logo: #e5a102; /* Dorado/Amarillo Quemado */
+  --accent-color: #e5a102;
+  --header-logo: #e5a102;
 
   /* --- Colores de Feedback --- */
-  --success-color: #2a9d8f; /* Un verde azulado que complementa */
-  --danger-color: #e63946; /* Un rojo vivo para errores */
+  --success-color: #2a9d8f;
+  --danger-color: #e63946;
 
   /* --- Colores de Texto --- */
-  --text-primary: #212529; /* Casi negro, para máxima legibilidad */
-  --text-secondary: #6c757d; /* Gris para subtítulos y texto secundario */
-  --text-on-primary: #ffffff; /* Texto blanco sobre fondos guinda */
+  --text-primary: #212529;
+  --text-secondary: #6c757d;
+  --text-on-primary: #ffffff;
 
   /* --- Superficies y Bordes --- */
-  --surface-ground: #fdfbfc; /* Fondo de página (blanco con un toque muy sutil de rosa/rojo) */
-  --surface-card: #ffffff; /* Fondo para tarjetas y modales */
-  --border-color: #e9ecef; /* Un gris muy claro para bordes */
+  --surface-ground: #fdfbfc;
+  --surface-card: #ffffff;
+  --border-color: #e9ecef;
 
   /* --- Otros --- */
-  --logo-color: var(--header-logo); /* Las estrellas ahora serán doradas */
-  --rating-color: var(--accent-color); /* Las estrellas ahora serán doradas */
-  --favorite-color: var(
-    --danger-color
-  ); /* El corazón de favorito se mantiene rojo */
+  --logo-color: var(--header-logo);
+  --rating-color: var(--accent-color);
+  --favorite-color: var(--danger-color);
   --font-family: 'Poppins', sans-serif;
+}
+
+/*  Modo Oscuro Automático */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --primary-color: #6a0f2a;
+    --primary-dark: #f3a0a0;
+
+    --accent-color: #f4c430;
+    --header-logo: #f4c430;
+
+    --success-color: #3bbfad;
+    --danger-color: #ff6b6b;
+
+    --text-primary: #f1f1f1;
+    --text-secondary: #b5b5b5;
+    --text-on-primary: #ffffff;
+
+    --surface-ground: #1b1b1b;
+    --surface-card: #2a2a2a;
+    --border-color: #3c3c3c;
+
+    --logo-color: var(--header-logo);
+    --rating-color: var(--accent-color);
+    --favorite-color: var(--danger-color);
+  }
+
+  /* Inputs, Textareas y Selects en modo oscuro */
+  input,
+  textarea,
+  select {
+    background-color: var(--surface-card); /* Fondo oscuro */
+    color: var(--text-primary); /* Texto blanco */
+    border: 1px solid var(--border-color); /* Bordes suaves */
+  }
+
+  /* Placeholder también en color claro */
+  input::placeholder,
+  textarea::placeholder {
+    color: var(--text-secondary);
+    opacity: 1;
+  }
+
+  /* Texto en labels */
+  label {
+    color: var(--text-primary);
+  }
 }
