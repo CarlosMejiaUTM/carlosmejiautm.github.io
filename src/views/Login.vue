@@ -120,7 +120,6 @@
 
   const router = useRouter();
 
-  // State
   const username = ref('');
   const password = ref('');
   const email = ref('');
@@ -129,9 +128,7 @@
   const forgotMessage = ref('');
   const showForgot = ref(false);
   const loginSuccess = ref(false);
-  // Agrega esto con las otras refs
   const showPassword = ref(false);
-  // Password visibility state
   const passwordFieldType = ref('password');
 
   const togglePasswordVisibility = () => {
@@ -157,9 +154,8 @@
 
       window.dispatchEvent(new Event('login-update'));
 
-      loginSuccess.value = true; // Activar estado de éxito
+      loginSuccess.value = true;
 
-      // Esperar 1.5 segundos para mostrar el mensaje de éxito antes de redirigir
       setTimeout(() => {
         const previousRoute = localStorage.getItem('preLoginRoute') || '/';
         localStorage.removeItem('preLoginRoute');
@@ -197,7 +193,6 @@
     const from =
       router.currentRoute.value?.query?.redirect ||
       router.options.history.state.back;
-    // Solo guardar la ruta si no es una de las rutas de autenticación
     if (from && !['/login', '/register'].includes(from)) {
       localStorage.setItem('preLoginRoute', from);
     }

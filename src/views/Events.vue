@@ -1,4 +1,5 @@
 <template>
+  <!-- Carrusel superior -->
   <div class="main-carousel">
     <div
       v-for="(zone, index) in zonesWithImages"
@@ -7,7 +8,7 @@
       :class="{ active: index === currentIndex }"
     >
       <img
-        v-if="zone.imageUrls && zone.imageUrls.length > 0"
+        v-if="zone.imageUrls?.length"
         :src="zone.imageUrls[0]"
         class="carousel-image"
         :alt="`Imagen principal de ${zone.name}`"
@@ -18,8 +19,7 @@
     </div>
   </div>
 
-  <!-- SECCIÓN PRINCIPAL ORIGINAL -->
-
+  <!-- Página principal -->
   <section class="events-page">
     <div class="events-header">
       <h1 class="section-title">Explora Yucatán</h1>
@@ -28,134 +28,209 @@
       </p>
     </div>
 
-    <!-- EL RESTO SIN CAMBIOS -->
-    <div class="filters">
-      <div class="search-wrapper">
-        <i class="fas fa-search"></i>
-        <input
-          v-model="searchTerm"
-          type="text"
-          placeholder="Buscar por nombre..."
-          class="search-input"
-        />
-      </div>
-      <div class="select-wrapper">
-        <i class="fas fa-map-marker-alt"></i>
-        <select v-model="selectedMunicipality" class="select-filter">
-          <option value="">Todos los municipios</option>
-          <option
-            v-for="municipio in municipios"
-            :key="municipio"
-            :value="municipio"
-          >
-            {{ municipio }}
-          </option>
-        </select>
-      </div>
-    </div>
-
-    <!-- Cards, paginación, modales, etc... -->
-    <div v-if="isLoading" class="zones-grid">
-      <div v-for="i in itemsPerPage" :key="i" class="skeleton-card">
-        <div class="skeleton-image"></div>
-        <div class="skeleton-info">
-          <div class="skeleton-line title"></div>
-          <div class="skeleton-line"></div>
-        </div>
-      </div>
-    </div>
-
-    <div v-else-if="paginatedZones.length > 0" class="zones-grid">
-      <div v-for="zone in paginatedZones" :key="zone._id" class="zone-card">
-        <router-link
-          :to="{ name: 'DetailEvents', params: { id: zone._id } }"
-          class="card-link-wrapper"
-        >
-          <img
-            v-if="zone.imageUrls && zone.imageUrls.length > 0"
-            :src="zone.imageUrls[0]"
-            :alt="`Imagen de ${zone.name}`"
-            class="zone-image"
-          />
-          <div class="zone-info">
-            <h3>{{ zone.name }}</h3>
-            <p class="municipality">
-              <i class="fas fa-map-marker-alt"></i>
-              {{ zone.municipality }}
-            </p>
-            <p class="rating">
-              <span v-html="getStars(zone.averageRating)"></span>
-              <span class="reviews">({{ zone.numReviews }})</span>
-            </p>
-          </div>
-        </router-link>
-
-        <div
-          v-if="isAuthenticated && userRole === 'admin'"
-          class="admin-buttons"
-        >
-          <button class="btn-edit" @click.stop="openEdit(zone)">Editar</button>
-          <button class="btn-delete" @click.stop="confirmDelete(zone)">
-            Eliminar
+    <div class="filters-layout">
+      <!-- Filtros -->
+      <aside class="filters-sidebar">
+        <div class="filters-header">
+          <h2>Filtros</h2>
+          <button class="clear-filters" @click="clearAllFilters">
+            Borrar todo
           </button>
         </div>
+        <hr class="footer-separator" />
 
-        <button
-          v-if="isAuthenticated && userRole === 'user'"
-          class="favorite-btn"
-          @click.stop="toggleFavorite(zone._id)"
-          :disabled="togglingFavoriteId === zone._id"
-          :aria-label="
-            isFavorite(zone._id) ? 'Quitar de favoritos' : 'Agregar a favoritos'
-          "
+        <!-- Mejores Reseñas -->
+        <div class="filter-group">
+          <h2
+            class="filter-title"
+            @click="showBestRatedFilter = !showBestRatedFilter"
+          >
+            Mejores Reseñas
+            <span class="toggle-icon">{{
+              showBestRatedFilter ? '▾' : '▸'
+            }}</span>
+          </h2>
+          <div v-if="showBestRatedFilter" class="filter-content">
+            <label class="rating-checkbox-label">
+              <input type="checkbox" v-model="bestRated" />
+              <span>Mejores calificados</span>
+            </label>
+          </div>
+        </div>
+        <hr class="footer-separator" />
+
+        <!-- Municipios -->
+        <div class="filter-group">
+          <h2
+            class="filter-title"
+            @click="showMunicipiosFilter = !showMunicipiosFilter"
+          >
+            Municipios
+            <span class="toggle-icon">{{
+              showMunicipiosFilter ? '▾' : '▸'
+            }}</span>
+          </h2>
+          <div
+            v-if="showMunicipiosFilter"
+            class="filter-content municipality-options"
+          >
+            <label
+              v-for="municipio in municipios"
+              :key="municipio"
+              class="municipio-label"
+              :title="municipio"
+            >
+              <input
+                type="checkbox"
+                :value="municipio"
+                v-model="selectedMunicipalities"
+              />
+              <span class="municipio-nombre">{{ municipio }}</span>
+              <span class="municipio-cantidad">
+                ({{ zonesCountByMunicipality[municipio] || 0 }} zonas)
+              </span>
+            </label>
+          </div>
+        </div>
+      </aside>
+
+      <div class="zones-content">
+        <div class="search-bar">
+          <i class="fas fa-search search-icon"></i>
+          <input
+            v-model="searchTerm"
+            type="text"
+            placeholder="Buscar una zona turística..."
+            class="search-input"
+          />
+        </div>
+
+        <!-- Skeleton mientras carga -->
+        <div v-if="isLoading" class="zones-grid">
+          <div v-for="i in itemsPerPage" :key="i" class="skeleton-card">
+            <div class="skeleton-image"></div>
+            <div class="skeleton-info">
+              <div class="skeleton-line title"></div>
+              <div class="skeleton-line"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Resultados -->
+        <div v-else-if="paginatedZones.length > 0" class="zones-grid">
+          <div v-for="zone in paginatedZones" :key="zone._id" class="zone-card">
+            <router-link
+              :to="{ name: 'DetailEvents', params: { id: zone._id } }"
+              class="card-link-wrapper"
+            >
+              <img
+                v-if="zone.imageUrls?.length"
+                :src="zone.imageUrls[0]"
+                class="zone-image"
+                :alt="`Imagen de ${zone.name}`"
+              />
+              <div class="zone-info">
+                <h3>{{ zone.name }}</h3>
+                <p class="municipality">
+                  <i class="fas fa-map-marker-alt"></i>
+                  {{ zone.municipality }}
+                </p>
+                <p class="rating">
+                  <span v-html="getStars(zone.averageRating)"></span>
+                  <span class="reviews">({{ zone.numReviews }})</span>
+                </p>
+              </div>
+            </router-link>
+
+            <!-- Admin -->
+            <div
+              v-if="isAuthenticated && userRole === 'admin'"
+              class="admin-buttons"
+            >
+              <button class="btn-edit" @click.stop="openEdit(zone)">
+                Editar
+              </button>
+              <button class="btn-delete" @click.stop="confirmDelete(zone)">
+                Eliminar
+              </button>
+            </div>
+
+            <!-- Compartir y Favorito -->
+            <div
+              class="action-buttons"
+              v-if="isAuthenticated && userRole === 'user'"
+            >
+              <button
+                class="share-btn"
+                @click.stop="openShareModal(zone)"
+                aria-label="Compartir zona"
+              >
+                <i class="fas fa-link"></i>
+              </button>
+              <button
+                class="favorite-btn"
+                @click.stop="toggleFavorite(zone._id)"
+                :disabled="togglingFavoriteId === zone._id"
+                :aria-label="
+                  isFavorite(zone._id)
+                    ? 'Quitar de favoritos'
+                    : 'Agregar a favoritos'
+                "
+              >
+                <span
+                  v-if="togglingFavoriteId === zone._id"
+                  class="spinner small"
+                ></span>
+                <i
+                  v-else
+                  :class="[
+                    'favorite-icon',
+                    isFavorite(zone._id)
+                      ? 'fas fa-heart active'
+                      : 'far fa-heart',
+                  ]"
+                ></i>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- No resultados -->
+        <div v-else class="no-results">
+          <p>No se encontraron zonas que coincidan con tu búsqueda.</p>
+        </div>
+
+        <!-- Paginación -->
+        <nav
+          v-if="!isLoading && totalPages > 1"
+          class="pagination"
+          role="navigation"
         >
-          <span
-            v-if="togglingFavoriteId === zone._id"
-            class="spinner small"
-          ></span>
-          <i
-            v-else
-            :class="[
-              'favorite-icon',
-              isFavorite(zone._id) ? 'fas fa-heart active' : 'far fa-heart',
-            ]"
-          ></i>
-        </button>
+          <button
+            :disabled="currentPage === 1"
+            @click="changePage(currentPage - 1)"
+          >
+            ‹
+          </button>
+          <button
+            v-for="page in totalPages"
+            :key="page"
+            :class="{ active: page === currentPage }"
+            @click="changePage(page)"
+          >
+            {{ page }}
+          </button>
+          <button
+            :disabled="currentPage === totalPages"
+            @click="changePage(currentPage + 1)"
+          >
+            ›
+          </button>
+        </nav>
       </div>
     </div>
 
-    <div v-else class="no-results">
-      <p>No se encontraron zonas que coincidan con tu búsqueda.</p>
-    </div>
-
-    <nav
-      v-if="!isLoading && totalPages > 1"
-      class="pagination"
-      role="navigation"
-      aria-label="Paginación"
-    >
-      <button
-        :disabled="currentPage === 1"
-        @click="changePage(currentPage - 1)"
-      >
-        ‹
-      </button>
-      <button
-        v-for="page in totalPages"
-        :key="page"
-        :class="{ active: page === currentPage }"
-        @click="changePage(page)"
-      >
-        {{ page }}
-      </button>
-      <button
-        :disabled="currentPage === totalPages"
-        @click="changePage(currentPage + 1)"
-      >
-        ›
-      </button>
-    </nav>
-
+    <!-- Modales -->
     <EditZoneModal
       :is-open="editModalOpen"
       :zone-data="editZone"
@@ -171,6 +246,68 @@
     />
     <Notification :notification="notification" />
   </section>
+  <!-- Modal de compartir -->
+  <div
+    v-if="shareModalOpen"
+    class="share-modal-overlay"
+    @click.self="closeShareModal"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="shareModalTitle"
+  >
+    <div class="share-modal-card">
+      <h3 id="shareModalTitle">Compartir zona turística</h3>
+      <p class="share-url">{{ shareUrl }}</p>
+
+      <button class="copy-link-btn" @click="copyLink">
+        <i class="fas fa-copy"></i> Copiar enlace
+      </button>
+
+      <div class="share-options">
+        <a
+          :href="facebookShareUrl"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="share-option facebook"
+          aria-label="Compartir en Facebook"
+        >
+          <i class="fab fa-facebook-f"></i>
+        </a>
+
+        <a
+          :href="twitterShareUrl"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="share-option twitter"
+          aria-label="Compartir en Twitter"
+        >
+          <i class="fab fa-twitter"></i>
+        </a>
+
+        <a
+          :href="gmailShareUrl"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="share-option gmail"
+          aria-label="Compartir por Gmail"
+        >
+          <i class="fas fa-envelope"></i>
+        </a>
+
+        <button
+          class="share-option close-btn"
+          @click="closeShareModal"
+          aria-label="Cerrar modal"
+        >
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+
+      <div v-if="copySuccess" class="copy-success-msg" role="alert">
+        ¡Enlace copiado!
+      </div>
+    </div>
+  </div>
 </template>
 
 <script setup>
@@ -188,36 +325,11 @@
 
   let intervalId = null;
 
-  const zonesWithImages = computed(() => {
-    if (Array.isArray(paginatedZones.value)) {
-      return paginatedZones.value.filter(
-        (zone) => zone.imageUrls && zone.imageUrls.length > 0
-      );
-    }
-    return [];
-  });
-
-  function nextImage() {
-    if (zonesWithImages.value.length === 0) return;
-    currentIndex.value =
-      (currentIndex.value + 1) % zonesWithImages.value.length;
-  }
-
-  onMounted(() => {
-    intervalId = setInterval(() => {
-      nextImage();
-    }, 5000);
-  });
-
-  onUnmounted(() => {
-    if (intervalId) clearInterval(intervalId);
-  });
-
-  // STATE
   const zonas = ref([]);
   const municipios = ref([]);
   const searchTerm = ref('');
-  const selectedMunicipality = ref('');
+  const selectedMunicipalities = ref([]);
+  const bestRated = ref(false);
   const currentPage = ref(1);
   const totalPages = ref(1);
   const itemsPerPage = 8;
@@ -234,23 +346,52 @@
   const editZone = ref(null);
   const deleteConfirmOpen = ref(false);
   const zoneToDelete = ref(null);
-
+  const allZones = ref([]);
+  const showBestRatedFilter = ref(true);
+  const showMunicipiosFilter = ref(true);
   const paginatedZones = computed(() => zonas.value);
+  const shareModalOpen = ref(false);
+  const shareZoneId = ref(null);
+  const copySuccess = ref(false);
 
-  /**
-   * Carga los datos iniciales de la página: la primera página de zonas y la lista completa de municipios.
-   */
+  const zonesWithImages = computed(() => {
+    return paginatedZones.value.filter(
+      (zone) => zone.imageUrls && zone.imageUrls.length > 0
+    );
+  });
+
+  function nextImage() {
+    if (zonesWithImages.value.length === 0) return;
+    currentIndex.value =
+      (currentIndex.value + 1) % zonesWithImages.value.length;
+  }
+
+  onMounted(() => {
+    intervalId = setInterval(nextImage, 5000);
+  });
+
+  onUnmounted(() => {
+    if (intervalId) clearInterval(intervalId);
+  });
+
+  /* ----------------------------------------
+  FUNCIONES PRINCIPALES
+---------------------------------------- */
+
   const loadInitialData = async () => {
     isLoading.value = true;
     try {
-      const [zonesRes, municipiosRes] = await Promise.all([
+      const [zonesRes, municipiosRes, allZonesRes] = await Promise.all([
         api.get('/zones', { params: { page: 1, limit: itemsPerPage } }),
         api.get('/zones/municipalities'),
+        api.get('/zones', { params: { page: 1, limit: 1000 } }),
       ]);
 
       zonas.value = zonesRes.data.data;
       totalPages.value = zonesRes.data.pages || 1;
       municipios.value = municipiosRes.data.data;
+
+      allZones.value = allZonesRes.data.data;
 
       updateAuthState();
       if (isAuthenticated.value && userRole.value === 'user') {
@@ -266,31 +407,33 @@
     }
   };
 
-  /**
-   * Filtra y carga las zonas según la búsqueda, municipio o página seleccionada.
-   */
-  const filterAndLoadZones = async () => {
-    isLoading.value = true;
-    try {
-      const params = {
-        page: currentPage.value,
-        limit: itemsPerPage,
-        municipality: selectedMunicipality.value || undefined,
-        search: searchTerm.value.trim() || undefined,
-      };
-      const response = await api.get('/zones', { params });
-      zonas.value = response.data.data;
-      totalPages.value = response.data.pages || 1;
-    } catch (err) {
-      showNotification('Error al aplicar los filtros.', 'error');
-    } finally {
-      isLoading.value = false;
+  const filterAndLoadZones = () => {
+    let filtered = allZones.value;
+
+    if (searchTerm.value.trim()) {
+      const term = searchTerm.value.trim().toLowerCase();
+      filtered = filtered.filter((zone) =>
+        zone.name.toLowerCase().includes(term)
+      );
     }
+
+    if (bestRated.value) {
+      filtered = filtered.filter((zone) => zone.averageRating >= 4.0);
+    }
+
+    if (selectedMunicipalities.value.length > 0) {
+      filtered = filtered.filter((zone) =>
+        selectedMunicipalities.value.includes(zone.municipality)
+      );
+    }
+
+    totalPages.value = Math.ceil(filtered.length / itemsPerPage);
+    zonas.value = filtered.slice(
+      (currentPage.value - 1) * itemsPerPage,
+      currentPage.value * itemsPerPage
+    );
   };
 
-  /**
-   * Carga las zonas favoritas del usuario logueado.
-   */
   const loadFavorites = async () => {
     if (!userId.value) return;
     try {
@@ -301,9 +444,6 @@
     }
   };
 
-  /**
-   * Envía los datos del formulario de edición al backend.
-   */
   const submitEdit = async (formData) => {
     isSaving.value = true;
     try {
@@ -315,6 +455,11 @@
       });
       showNotification('Zona actualizada con éxito.', 'success');
       closeEdit();
+      currentPage.value = 1;
+      const updatedZones = await api.get('/zones', {
+        params: { page: 1, limit: 1000 },
+      });
+      allZones.value = updatedZones.data.data;
       await filterAndLoadZones();
     } catch (err) {
       showNotification('Error al editar la zona.', 'error');
@@ -323,9 +468,6 @@
     }
   };
 
-  /**
-   * Elimina una zona tras confirmación.
-   */
   const deleteZone = async () => {
     isDeleting.value = true;
     try {
@@ -336,11 +478,15 @@
       });
       showNotification('Zona eliminada correctamente.', 'success');
       cancelDelete();
+      const updatedZones = await api.get('/zones', {
+        params: { page: 1, limit: 1000 },
+      });
+      allZones.value = updatedZones.data.data;
+
       if (paginatedZones.value.length === 1 && currentPage.value > 1) {
         currentPage.value--;
-      } else {
-        await filterAndLoadZones();
       }
+      await filterAndLoadZones();
     } catch (err) {
       showNotification('Error al eliminar la zona.', 'error');
     } finally {
@@ -348,9 +494,6 @@
     }
   };
 
-  /**
-   * Añade o quita una zona de los favoritos del usuario.
-   */
   const toggleFavorite = async (zoneId) => {
     togglingFavoriteId.value = zoneId;
     try {
@@ -368,22 +511,21 @@
     }
   };
 
-  // WATCHERS
-  watch([searchTerm, selectedMunicipality], () => {
-    if (currentPage.value !== 1) {
-      currentPage.value = 1;
-    } else {
-      filterAndLoadZones();
-    }
+  /* ----------------------------------------
+  WATCHERS
+---------------------------------------- */
+  watch([searchTerm, bestRated, selectedMunicipalities], () => {
+    currentPage.value = 1;
+    filterAndLoadZones();
   });
 
-  watch(currentPage, (newPage, oldPage) => {
-    if (newPage !== oldPage) {
-      filterAndLoadZones();
-    }
+  watch(currentPage, () => {
+    filterAndLoadZones();
   });
 
-  // HELPERS & UI
+  /* ----------------------------------------
+  UI / Helpers
+---------------------------------------- */
   const changePage = (page) => {
     if (page < 1 || page > totalPages.value || isLoading.value) return;
     currentPage.value = page;
@@ -402,7 +544,17 @@
     }, duration);
   };
 
-  // MODAL HANDLERS
+  const clearAllFilters = () => {
+    searchTerm.value = '';
+    selectedMunicipalities.value = [];
+    bestRated.value = false;
+    currentPage.value = 1;
+    filterAndLoadZones();
+  };
+
+  /* ----------------------------------------
+  MODAL HANDLERS
+---------------------------------------- */
   const openEdit = (zone) => {
     editZone.value = { ...zone };
     editModalOpen.value = true;
@@ -422,7 +574,9 @@
     zoneToDelete.value = null;
   };
 
-  // LIFECYCLE & SESSION
+  /* ----------------------------------------
+  AUTH
+---------------------------------------- */
   const updateAuthState = () => {
     isAuthenticated.value = !!localStorage.getItem('token');
     userRole.value = localStorage.getItem('role');
@@ -446,4 +600,59 @@
   onUnmounted(() => {
     window.removeEventListener('login-update', handleLoginUpdate);
   });
+
+  const zonesCountByMunicipality = computed(() => {
+    const counts = {};
+    for (const zone of allZones.value) {
+      if (zone.municipality) {
+        counts[zone.municipality] = (counts[zone.municipality] || 0) + 1;
+      }
+    }
+    return counts;
+  });
+
+  const shareUrl = computed(() => {
+    if (!shareZoneId.value) return '';
+    return `https://carlosmejiautm.github.io/details/${shareZoneId.value}`;
+  });
+
+  const facebookShareUrl = computed(() => {
+    return `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(shareUrl.value)}`;
+  });
+
+  const twitterShareUrl = computed(() => {
+    const text = encodeURIComponent('¡Mira esta zona turística en Yucatán!');
+    return `https://twitter.com/intent/tweet?url=${encodeURIComponent(shareUrl.value)}&text=${text}`;
+  });
+
+  const gmailShareUrl = computed(() => {
+    const subject = encodeURIComponent('Zona turística en Yucatán');
+    const body = encodeURIComponent(
+      `Mira esta zona turística: ${shareUrl.value}`
+    );
+    return `mailto:?subject=${subject}&body=${body}`;
+  });
+  function openShareModal(zone) {
+    shareZoneId.value = zone._id;
+    copySuccess.value = false;
+    shareModalOpen.value = true;
+  }
+
+  function closeShareModal() {
+    shareModalOpen.value = false;
+    shareZoneId.value = null;
+    copySuccess.value = false;
+  }
+
+  function copyLink() {
+    navigator.clipboard
+      .writeText(shareUrl.value)
+      .then(() => {
+        copySuccess.value = true;
+        setTimeout(() => (copySuccess.value = false), 2000);
+      })
+      .catch(() => {
+        alert('No se pudo copiar el enlace. Por favor, cópialo manualmente.');
+      });
+  }
 </script>

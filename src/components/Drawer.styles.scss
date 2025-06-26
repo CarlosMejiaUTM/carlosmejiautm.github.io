@@ -98,7 +98,7 @@
   width: 50px;
   height: 50px;
   border-radius: 50%;
-  background-color: var(--primary-color);
+  background-color: var(--primary-dark);
   color: var(--text-on-primary);
   font-size: 1.5rem;
   font-weight: 700;
@@ -166,7 +166,7 @@
 
     i,
     .label {
-      color: var(--primary-color);
+      color: var(--primary-dark);
     }
 
     .arrow {
@@ -181,10 +181,10 @@
   border-top: 1px solid var(--border-color);
 
   .menu-item.logout:hover {
-    background-color: #f8d7da;
+    background-color: var(--surface-card);
     .label,
     .icon-logout {
-      color: #ce1d2b;
+      color: var(--primary-dark);
     }
   }
 }

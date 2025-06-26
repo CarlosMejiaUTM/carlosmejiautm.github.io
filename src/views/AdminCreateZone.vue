@@ -90,12 +90,11 @@
 
   const router = useRouter();
 
-  // El estado ahora maneja un array de archivos
   const zone = ref({
     name: '',
     municipality: '',
     description: '',
-    imageFiles: [], // Pasa de ser 'imageFile: null' a 'imageFiles: []'
+    imageFiles: [],
   });
 
   // El estado ahora maneja un array de URLs para las vistas previas

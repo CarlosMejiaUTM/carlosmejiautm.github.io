@@ -44,7 +44,7 @@
 
         <div class="zona-info">
           <h1 class="zona-title">{{ zona.name }}</h1>
-          <p class="zona-municipio">
+          <p class="municipality">
             <i class="fas fa-map-marker-alt"></i>
             {{ zona.municipality }}
           </p>
